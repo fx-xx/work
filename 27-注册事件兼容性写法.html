@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		//应用闭包最外层函数只执行一次的特性，让对浏览器性能的判断只执行一次，多次绑定事件是可以确定以后用的绑定事件的方法
+		function eventsRegister () {
+			if(window.addEventListener){
+				return  function  (target,type,handler) {
+					target.addEventListener(type,handler);
+				}
+			}else if(window.attachEvent){
+				return function  (target,type,handler) {
+					target.attachEvent('on'+type,function  () {
+						handler.call(target,window.event);
+					})
+				}
+			}else {
+				return function  () {
+					target['on'+type]=handler;
+				}
+			}
+		}
+	</script>
+</html>
